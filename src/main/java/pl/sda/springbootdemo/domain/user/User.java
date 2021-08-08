@@ -1,8 +1,6 @@
 package pl.sda.springbootdemo.domain.user;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import pl.sda.springbootdemo.domain.address.Address;
 import pl.sda.springbootdemo.domain.common.BaseEntity;
 
@@ -11,6 +9,8 @@ import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@ToString(callSuper = true)
 @Entity
 @Table(name = "myusers")
 public class User extends BaseEntity {
@@ -26,10 +26,20 @@ public class User extends BaseEntity {
 
     private String password;
 
+    @Column(name = "is_active")
+    private boolean active;
+
     @ManyToMany
     @JoinTable(name = "users_addresses",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "address_id")})
     private List<Address> addresses;
 
+    public User(String firstName, String lastName, String login, String password, boolean active) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.login = login;
+        this.password = password;
+        this.active = active;
+    }
 }
