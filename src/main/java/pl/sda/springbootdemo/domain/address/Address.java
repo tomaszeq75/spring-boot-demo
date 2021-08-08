@@ -6,6 +6,7 @@ import pl.sda.springbootdemo.domain.common.BaseEntity;
 import pl.sda.springbootdemo.domain.user.User;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -24,5 +25,14 @@ public class Address extends BaseEntity {
     private String postalCode;
 
     @ManyToMany(mappedBy = "addresses")
-    private List<User> users;
+    private List<User> users = new ArrayList<>();
+
+    public Address() {
+    }
+
+    public Address(String city, String street, String postalCode) {
+        this.city = city;
+        this.street = street;
+        this.postalCode = postalCode;
+    }
 }

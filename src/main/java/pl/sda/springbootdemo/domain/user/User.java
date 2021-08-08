@@ -5,6 +5,7 @@ import pl.sda.springbootdemo.domain.address.Address;
 import pl.sda.springbootdemo.domain.common.BaseEntity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -33,7 +34,7 @@ public class User extends BaseEntity {
     @JoinTable(name = "users_addresses",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "address_id")})
-    private List<Address> addresses;
+    private List<Address> addresses = new ArrayList<>();
 
     public User(String firstName, String lastName, String login, String password, boolean active) {
         this.firstName = firstName;
