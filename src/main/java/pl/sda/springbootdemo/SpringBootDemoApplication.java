@@ -29,15 +29,13 @@ public class SpringBootDemoApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        Address address1 = new Address("Lodz", "Krotka 15", "90-050");
-        Address address2 = new Address("Lodz", "Długa 15", "90-047");
-
-
-
-        User user = new User("Janusz", "Kowal", "jankow", "", true);
-        user.getAddresses().addAll(Arrays.asList(addressService.save(address1), addressService.save(address2)));
-
-        System.out.println(userService.save(user));
+//        Address address1 = new Address("Lodz", "Krotka 15", "90-050");
+//        Address address2 = new Address("Lodz", "Długa 15", "90-047");
+//
+//        User user = new User("Janusz", "Kowal", "jankow", "", true);
+//        user.getAddresses().addAll(Arrays.asList(addressService.save(address1), addressService.save(address2)));
+//
+//        System.out.println(userService.save(user));
     }
 
 }
