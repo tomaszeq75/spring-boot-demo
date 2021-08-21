@@ -1,21 +1,23 @@
 package pl.sda.springbootdemo.domain.user;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import pl.sda.springbootdemo.domain.address.Address;
 import pl.sda.springbootdemo.domain.address.AddressRepository;
 
-import java.util.Collection;
 import java.util.List;
 
 public class UserService {
 
     private final UserRepository userRepository;
     private final AddressRepository addressRepository;
+    private final BCryptPasswordEncoder encoder;
 
-    public UserService(UserRepository userRepository, AddressRepository addressRepository) {
+    public UserService(UserRepository userRepository, AddressRepository addressRepository, BCryptPasswordEncoder encoder) {
         this.userRepository = userRepository;
         this.addressRepository = addressRepository;
+        this.encoder = encoder;
     }
 
     @Transactional
@@ -25,6 +27,7 @@ public class UserService {
             List<Address> savedAddresses = addressRepository.saveAll(addresses);
             user.setAddresses(savedAddresses);
         }
+        user.setPassword(encoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 

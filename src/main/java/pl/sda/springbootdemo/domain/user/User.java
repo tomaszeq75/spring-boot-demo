@@ -3,6 +3,7 @@ package pl.sda.springbootdemo.domain.user;
 import lombok.*;
 import pl.sda.springbootdemo.domain.address.Address;
 import pl.sda.springbootdemo.domain.common.BaseEntity;
+import pl.sda.springbootdemo.domain.role.Role;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -29,6 +30,9 @@ public class User extends BaseEntity {
 
     @Column(name = "is_active")
     private boolean active;
+
+    @ManyToOne
+    private Role role;
 
     @ManyToMany
     @JoinTable(name = "users_addresses",
