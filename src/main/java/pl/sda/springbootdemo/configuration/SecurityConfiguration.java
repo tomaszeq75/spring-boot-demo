@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -27,15 +28,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-//    @Autowired
-//    public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.jdbcAuthentication().passwordEncoder(new BCryptPasswordEncoder())
-//                .dataSource(dataSource)
-//                .usersByUsernameQuery("select username, password, enabled from users where username=?")
-//                .authoritiesByUsernameQuery("select username, role from users where username=?")
-//        ;
-//    }
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
@@ -46,6 +38,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout().permitAll()
                 .and().csrf().disable();
+    }
 
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.jdbcAuthentication()
+                .passwordEncoder(getEncoder()).dataSource(dataSource)
+                .usersByUsernameQuery("SELECT login, password, is_active from  myusers where login = ?;")
+                .authoritiesByUsernameQuery("select u.login, r.name from myusers u join roles r on u.role_id = r.id WHERE u.login = ?;");
     }
 }

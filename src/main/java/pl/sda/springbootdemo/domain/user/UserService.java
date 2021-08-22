@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import pl.sda.springbootdemo.domain.address.Address;
 import pl.sda.springbootdemo.domain.address.AddressRepository;
+import pl.sda.springbootdemo.domain.role.RoleRepository;
 
 import java.util.List;
 
@@ -13,11 +14,14 @@ public class UserService {
     private final UserRepository userRepository;
     private final AddressRepository addressRepository;
     private final BCryptPasswordEncoder encoder;
+    private final RoleRepository roleRepository;
 
-    public UserService(UserRepository userRepository, AddressRepository addressRepository, BCryptPasswordEncoder encoder) {
+
+    public UserService(UserRepository userRepository, AddressRepository addressRepository, BCryptPasswordEncoder encoder, RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.addressRepository = addressRepository;
         this.encoder = encoder;
+        this.roleRepository = roleRepository;
     }
 
     @Transactional
@@ -28,7 +32,10 @@ public class UserService {
             user.setAddresses(savedAddresses);
         }
         user.setPassword(encoder.encode(user.getPassword()));
-        return userRepository.save(user);
+        User savedUser = userRepository.save(user);
+        Long roleId = savedUser.getRole().getId();
+        savedUser.setRole(roleRepository.getById(roleId));
+        return savedUser;
     }
 
     public void delete(Long id) {

@@ -17,7 +17,8 @@ import java.util.List;
 public class Role extends BaseEntity {
 
     @Column(nullable = false)
-    private String name;
+    @Enumerated(EnumType.STRING)
+    private RoleEnum name;
 
     private String description;
 
