@@ -1,5 +1,7 @@
 package pl.sda.springbootdemo.domain.user;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -56,6 +58,14 @@ public class UserService {
 
     public User findById(Long id) {
         return userRepository.getById(id);
+    }
+
+    public Authentication getLoggedUser() {
+        return SecurityContextHolder.getContext().getAuthentication();
+    }
+
+    public List<User> getAll() {
+        return userRepository.findAll();
     }
 
 }
